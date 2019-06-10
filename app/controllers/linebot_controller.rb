@@ -21,15 +21,11 @@ class LinebotController < ApplicationController
           when Line::Bot::Event::MessageType::Text
             msg = event.message['text']
             if send_msg(msg)
-              logger.debug('callback true')
-              logger.debug(msg)
-              msg = "I'm lovin it!"
-              logger.debug(msg)
+              msg = change_msg(msg)
               client.reply_message(event['replyToken'], {
                 type: 'text',
                 text: msg});
             else
-              logger.debug('callback false')
               client.reply_message(event['replyToken'], {
                 type: 'text',
                 text: msg});
@@ -41,15 +37,19 @@ class LinebotController < ApplicationController
     end
 
     def send_msg(msg)
-      logger.debug(msg)
-      logger.debug('send_msg')
       if msg == 'マクドナルド'
-        logger.debug('send_msg true')
         return true
       else
-        logger.debug('send_msg false')
         false
       end
+    end
+
+    def change_msg(msg)
+      case msg
+      when "マクドナルド"
+        return "i'm lovin' it!"
+      end
+
     end
 
     private
