@@ -30,10 +30,20 @@ class LinebotController < ApplicationController
               type: 'text',
               text: event.message['text'] + 'タピオカ'
             }
-            client.reply_message(event['replyToken'], message)
+            if send(message.text)
+              
+            else
+              client.reply_message(event['replyToken'], message)
+            end
           end
         end
       }
       head :ok
+    end
+    
+    def send(msg)
+      if msg == 'マクドナルド'
+        client.reply_message(event['replyToken'], `I'm lovin it!`)
+      end
     end
   end
